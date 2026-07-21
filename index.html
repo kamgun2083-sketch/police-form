@@ -35,7 +35,7 @@
         <p>प्रहरी कर्मचारीहरुको दैनिक काम-कारवाही तथा परिचालन अभिलेख फारम</p>
     </div>
 
-    <form action="https://script.google.com/macros/s/AKfycbyS1mPzGd0g0IHIfTyWdFRSNHhYtSlzANPDBDaXpbW1oWBmoyA-QzrV1k_z8aK_6xuY/exec" method="POST">
+    <form id="myForm">
         
         <div class="row">
             <div class="col" style="flex: 1.5;">
@@ -156,7 +156,7 @@ function filterNames() {
         nameSelect.innerHTML = '<option value="">-- पहिले दर्जा छान्नुहोस् --</option>';
     }
 }
-</script><script>
+
 document.getElementById("myForm").addEventListener("submit", function(e) {
     e.preventDefault();
     let form = this;
@@ -168,17 +168,20 @@ document.getElementById("myForm").addEventListener("submit", function(e) {
     
     // डाटा तयार पार्ने
     let formData = new FormData(form);
-    formData.set("duty_type", values.join(", ")); // यहाँ सबै टिक लगाएका कामहरू जोडिन्छन्
+    formData.set("duty_type", values.join(", ")); 
     
-    // डाटा पठाउने (तपाईंको पुरानै URL यहाँ छ)
-    fetch("https://script.google.com/macros/s/AKfycbyS1mPzGd0g0IHIfTyWdFRSNHhYtSlzANPDBDaXpbW1oWBmoyA-QzrV1k_z8aK_6xuY/exec", {
-        method: "POST",
-        body: formData
-    }).then(() => { 
-        alert("सफलतापूर्वक सेभ भयो!"); 
-        location.reload(); // पेज रिफ्रेस हुन्छ
-    });
+    // Google Apps Script को URL
+    let scriptURL = "https://script.google.com/macros/s/AKfycbyS1mPzGd0g0IHIfTyWdFRSNHhYtSlzANPDBDaXpbW1oWBmoyA-QzrV1k_z8aK_6xuY/exec";
+    
+    // sendBeacon को प्रयोग (यसले OK मा अड्काउँदैन र ब्याकग्राउन्डमा तुरुन्तै पठाउँछ)
+    navigator.sendBeacon(scriptURL, formData);
+    
+    // तुरुन्तै सन्देश देखाउने र फारम खाली गर्ने
+    alert("सफलतापूर्वक सेभ भयो!"); 
+    form.reset(); 
+    document.getElementById("nameSelect").innerHTML = '<option value="">-- पहिले दर्जा छान्नुहोस् --</option>';
 });
 </script>
+
 </body>
 </html>
