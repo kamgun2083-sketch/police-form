@@ -6,17 +6,133 @@
 <meta charset="UTF-8">
     <title>दैनिक काम-कारवाही अभिलेख फारम</title>
     
-    <!-- यो ठाउँमा राख्ने हो -->
     <style>
-      label, .form-label {
-          background-color: #003366; 
-          color: white;             
-          padding: 6px 10px;        
-          border-radius: 4px;       
-          display: inline-block;
-          margin-bottom: 5px;
-      }
-    </style>
+    /* आधारभूत शैली */
+    body {
+        font-family: 'Noto Sans Devanagari', sans-serif;
+        background-color: #f4f6f9; /* हल्का ग्रे ब्याकग्राउण्ड */
+        color: #333;
+        margin: 0;
+        padding: 20px;
+    }
+
+    /* मुख्य कन्टेनर (सेतो कार्ड) */
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    /* माथिको हेडर */
+    .header {
+        text-align: center;
+        margin-bottom: 30px;
+        border-bottom: 2px solid #003366; /* गाढा निलो */
+        padding-bottom: 15px;
+    }
+
+    .header h2, .header h4, .header h5 {
+        margin: 5px 0;
+        color: #003366;
+        line-height: 1.4;
+    }
+
+    /* मुख्य शीर्षकहरू (Label) */
+    label {
+        font-weight: bold;
+        color: #003366;
+        display: block;
+        margin-bottom: 8px;
+        margin-top: 15px;
+        font-size: 1.1em;
+    }
+
+    /* ड्रपडाउन (Select) र टेक्स्ट बक्स */
+    select, input[type="text"], textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-family: inherit;
+        font-size: 1em;
+    }
+
+    select:focus, input:focus {
+        outline: none;
+        border-color: #0056b3;
+        box-shadow: 0 0 5px rgba(0,87,179,0.3);
+    }
+
+    /* चेकबक्स सेक्सन */
+    .checkbox-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        background-color: #e6f2ff; /* हल्का निलो ब्याकग्राउण्ड */
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+
+    .checkbox-item {
+        display: flex;
+        align-items: center;
+    }
+
+    .checkbox-item input {
+        margin-right: 10px;
+        width: 20px;
+        height: 20px;
+        accent-color: #003366; /* चेकबक्सको रङ */
+    }
+
+    .checkbox-item label {
+        margin: 0; /* चेकबक्स भित्रको लेबलको मार्जिन हटाउने */
+        font-weight: normal;
+        color: #1a1a1a;
+    }
+
+    /* Responsive design: मोबाइलमा पनि राम्रो देखाउन */
+    @media (max-width: 600px) {
+        .checkbox-group {
+            grid-template-columns: 1fr; /* मोबाइलमा एउटा मात्र स्तम्भ */
+        }
+        .container {
+            padding: 15px;
+        }
+        .header h2 { font-size: 1.3em; }
+        .header h4 { font-size: 1.1em; }
+    }
+</style>
+
+<!-- तपाईंको index.html को body भागलाई पनि यो संरचनामा मिलाउनुहोला (उदाहरणका लागि मात्र) -->
+<!--
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>काठमाडौं उपत्यका प्रहरी</h2>
+            <h4>सशस्त्र प्रहरी गण नं. २ महाराजगंज, काठमाडौं</h4>
+            <h5>प्रहरी कर्मचारीहरुको दैनिक काम-कारवाही तथा परिचालन अभिलेख फारम</h5>
+        </div>
+
+        <label for="miti">१. मिति (नेपालीमा) *</label>
+        <select id="miti">...</select>
+
+        <label for="hapta">२. हप्ता (बार) *</label>
+        <select id="hapta">...</select>
+
+        <label>५. कार्यको विवरण (टिक लगाउनुहोस्) *</label>
+        <div class="checkbox-group">
+            <div class="checkbox-item"><input type="checkbox"><label>बिहानको पिटी</label></div>
+            ... अन्य चेकबक्सहरू ...
+        </div>
+    </div>
+</body>
+-->
     <style>
         body { font-family: sans-serif; background: #f4f6f9; padding: 20px; }
         .box { max-width: 650px; background: #fff; padding: 30px; margin: 0 auto; border-radius: 8px; border-top: 6px solid #1a365d; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
