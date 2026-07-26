@@ -344,11 +344,10 @@ document.getElementById("myForm").addEventListener("submit", function(e) {
     // Google Apps Script को URL
     let scriptURL = "https://script.google.com/macros/s/AKfycbyS1mPzGd0g0IHIfTyWdFRSNHhYtSlzANPDBDaXpbW1oWBmoyA-QzrV1k_z8aK_6xuY/exec";
     
-    // sendBeacon को प्रयोग
+    // sendBeacon को प्रयोग (डाटा सेभ गर्न)
     navigator.sendBeacon(scriptURL, formData);
     
-    // सफलता सन्देश र फारम रिसेट
-    alert("सफलतापूर्वक सेभ भयो!"); 
+    // मेसेज नदेखाई केवल फारम मात्र रिसेट हुने
     form.reset(); 
     document.getElementById("nameSelect").innerHTML = '<option value="">-- पहिले दर्जा छान्नुहोस् --</option>';
 });
