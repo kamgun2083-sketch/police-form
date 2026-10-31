@@ -150,6 +150,57 @@
             color: #666;
         }
 
+
+        /* नाम छनोट (धेरै जना, खोज्ने) */
+        .sel-count { color: #1a365d; font-weight: bold; margin-left: 6px; }
+        .name-tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+        .mini-btn {
+            background: #fff; color: #1a365d; border: 1px solid #1a365d; border-radius: 4px;
+            padding: 6px 12px; font-size: 13px; font-family: inherit; cursor: pointer; transition: background 0.2s;
+        }
+        .mini-btn:hover { background: #1a365d; color: #fff; }
+        .name-list {
+            max-height: 280px; overflow-y: auto;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 4px 10px;
+        }
+        .name-item {
+            display: flex; align-items: flex-start; gap: 8px; font-size: 14px; color: #4a5568;
+            cursor: pointer; margin-top: 0; font-weight: normal; padding: 5px 6px; border-radius: 4px;
+        }
+        .name-item:hover { background: #edf2f7; }
+        .name-item input { width: 18px; height: 18px; accent-color: #1a365d; cursor: pointer; flex: none; margin-top: 2px; }
+        .name-item small { display: block; color: #718096; font-size: 12px; }
+        .name-item.done small.ok { color: #2f855a; font-weight: bold; }
+        .name-empty { grid-column: 1 / -1; color: #718096; font-size: 14px; padding: 6px; }
+        .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+        .chip {
+            background: #ebf4ff; color: #1a365d; border: 1px solid #bee3f8; border-radius: 14px;
+            padding: 3px 10px; font-size: 13px; cursor: pointer;
+        }
+        .sel-panel { margin-top: 10px; max-height: 340px; overflow-y: auto; }
+        .sel-hint { font-size: 12px; color: #718096; margin-bottom: 6px; }
+        .sel-row { background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px 10px; margin-bottom: 8px; }
+        .sel-head { display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: #1a365d; font-size: 14px; margin-bottom: 6px; }
+        .sel-head small { color: #718096; font-weight: normal; margin-left: 6px; }
+        .sel-x { background: none; border: none; color: #c53030; cursor: pointer; font-size: 16px; font-family: inherit; }
+        .sel-duties { display: flex; flex-wrap: wrap; gap: 6px; }
+        .dpill {
+            display: inline-flex; align-items: center; gap: 4px; margin-top: 0; font-weight: normal; font-size: 13px;
+            color: #4a5568; border: 1px solid #cbd5e0; border-radius: 14px; padding: 3px 10px; cursor: pointer; background: #f7fafc;
+        }
+        .dpill input { width: 15px; height: 15px; accent-color: #1a365d; cursor: pointer; }
+        .dpill:has(input:checked) { background: #ebf4ff; border-color: #1a365d; color: #1a365d; }
+        .dpill.common { cursor: default; opacity: 0.8; }
+        .dpill.recorded { background: #f0fff4; border-color: #9ae6b4; color: #2f855a; cursor: default; }
+        .dpill.recorded input { cursor: default; }
+        .dpill.common input { cursor: default; }
+        .toast {
+            position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%);
+            background: #1a365d; color: #fff; padding: 10px 18px; border-radius: 6px; font-size: 14px;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 99; max-width: 90%; text-align: center;
+        }
+        .toast.show { opacity: 1; }
+
         /* Responsive design */
         @media (max-width: 600px) {
             .row {
@@ -159,9 +210,71 @@
             .checkbox-group {
                 grid-template-columns: 1fr;
             }
+            .name-list { grid-template-columns: 1fr; }
             .box {
                 padding: 15px;
             }
+        }
+
+        /* ===== मोबाइल र कम्प्युटर दुवैमा मिल्ने ===== */
+        body { padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
+        .form-grid { display: block; }
+        .btn { min-height: 46px; }
+        .box { max-width: 700px; }
+
+        /* ट्याब्लेट / मध्यम स्क्रिन */
+        @media (min-width: 601px) and (max-width: 999px) {
+            .name-list { max-height: 320px; }
+        }
+
+        /* कम्प्युटर: दुई स्तम्भ — बायाँ: मिति/नाम छनोट, दायाँ: कार्य/विवरण/सेभ */
+        @media (min-width: 1000px) {
+            body { padding: 24px 32px; }
+            .box { max-width: 1180px; padding: 30px 36px; }
+            .form-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 36px; align-items: start; }
+            .form-right {
+                position: sticky; top: 16px;
+                max-height: calc(100vh - 32px); overflow-y: auto;
+                padding-right: 6px;
+            }
+            .form-right > label:first-child { margin-top: 0; }
+            .name-list { max-height: 360px; }
+            .sel-panel { max-height: 420px; }
+            .btn { font-size: 17px; }
+        }
+        @media (min-width: 1400px) {
+            .name-list { grid-template-columns: 1fr 1fr 1fr; }
+        }
+
+        /* मोबाइल: ठूला छुने बटन, सेभ बटन तल टाँसिने */
+        @media (max-width: 600px) {
+            body { padding: 8px; padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
+            .box { padding: 14px; border-radius: 6px; border-top-width: 5px; }
+            .top-head { gap: 6px; }
+            .top-head img { width: 46px !important; height: 46px !important; }
+            .top-head h2 { font-size: 14px !important; }
+            .top-head h3 { font-size: 12.5px !important; }
+            .top-head p { font-size: 12px !important; }
+            input[type="text"], select, textarea { font-size: 16px; padding: 12px 10px; }
+            .date-group { gap: 6px; }
+            .date-group select { padding: 12px 4px; }
+            .checkbox-group { grid-template-columns: 1fr 1fr; gap: 4px 8px; }
+            .checkbox-item { font-size: 15px; padding: 7px 0; }
+            .checkbox-item input { width: 22px; height: 22px; }
+            .name-item { font-size: 15px; padding: 10px 6px; }
+            .name-item input { width: 22px; height: 22px; }
+            .name-list { max-height: 52vh; }
+            .mini-btn { padding: 10px 14px; font-size: 14px; }
+            .sel-panel { max-height: none; }
+            .sel-x { font-size: 20px; padding: 4px 8px; }
+            .dpill { padding: 7px 12px; font-size: 14px; }
+            .dpill input { width: 18px; height: 18px; }
+            .btn {
+                position: sticky; bottom: 8px; z-index: 5; padding: 14px; font-size: 17px;
+                box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+            }
+            .toast { bottom: 84px; }
+            .footer { font-size: 13px; }
         }
     </style>
 </head>
@@ -169,7 +282,7 @@
 
 <div class="box">
     <!-- नयाँ हेडिङ (बायाँ लोगो, बीचमा शीर्षक, दायाँ झण्डा) -->
-    <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+    <div class="top-head" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
         <!-- बायाँ साइडको लोगो -->
         <div>
             <img src="my-logo.png" alt="Logo" style="width: 70px; height: 70px; object-fit: contain;">
@@ -189,6 +302,8 @@
     </div>
 
     <form id="myForm">
+    <div class="form-grid">
+    <div class="form-left">
         
         <div class="row">
             <div class="col" style="flex: 1.5;">
@@ -238,13 +353,22 @@
                 </select>
             </div>
             <div class="col">
-                <label>४. कर्मचारीको पुरा नाम *</label>
-                <select name="batch_team" id="nameSelect" required>
-                    <option value="">-- पहिले दर्जा छान्नुहोस् --</option>
-                </select>
+                <label>४. कर्मचारीको पुरा नाम * <span class="sel-count" id="selCount"></span></label>
+                <input type="text" id="nameSearch" placeholder="नाम खोज्नुहोस्..." autocomplete="off">
             </div>
         </div>
 
+        <div class="activity-section" style="margin-top: 0;">
+            <div class="name-tools">
+                <button type="button" class="mini-btn" id="selAllBtn" title="देखिएका सबै">सबै छान्नुहोस्</button>
+                <button type="button" class="mini-btn" id="clearBtn">सबै हटाउनुहोस्</button>
+            </div>
+            <div class="name-list" id="nameList"></div>
+            <div class="sel-panel" id="selChips"></div>
+        </div>
+
+    </div>
+    <div class="form-right">
         <label>५. कार्यको विवरण (टिक लगाउनुहोस्) *</label>
         <div class="activity-section">
             <div class="checkbox-group">
@@ -269,12 +393,16 @@
         <input type="text" name="remarks" placeholder="कैफियत भए लेख्नुहोस्">
 
         <button type="submit" class="btn">सेभ गर्नुहोस</button>
+    </div>
+    </div>
     </form>
 </div>
 
 <div class="footer">
     <p>डिजाइन बाई: प्र.ह. बैकुण्ठ सुवेदी</p>
 </div>
+
+<div class="toast" id="toast"></div>
 
 <script>
 // गते स्वतः भर्ने Dynamic Loop
@@ -292,6 +420,106 @@ for(let i = 1; i <= 32; i++) {
     option.textContent = nepaliNum;
     gateSelect.appendChild(option);
 }
+
+// ===== नेपाली मिति र बार स्वतः (नेपाल समय अनुसार) =====
+// वि.सं. २०८० देखि २०९० सम्मको महिनाको दिन संख्या
+const BS_MONTH_DAYS = {
+    2080: [31,32,31,32,31,30,30,30,29,29,30,30],
+    2081: [31,32,31,32,31,30,30,30,29,30,29,31],
+    2082: [31,31,32,31,31,31,30,29,30,29,30,30],
+    2083: [31,31,32,31,31,31,30,29,30,29,30,30],
+    2084: [31,31,32,31,31,30,30,30,29,30,30,30],
+    2085: [31,32,31,32,30,31,30,30,29,30,30,30],
+    2086: [30,32,31,32,31,30,30,30,29,30,30,30],
+    2087: [31,31,32,31,31,31,30,30,29,30,30,30],
+    2088: [30,31,32,32,30,31,30,30,29,30,30,30],
+    2089: [30,32,31,32,31,30,30,30,29,30,30,30],
+    2090: [30,32,31,32,31,30,30,30,29,30,30,30]
+};
+// आधार मिति: वि.सं. २०८३ बैशाख १ = ई.सं. २०२६ अप्रिल १४ (UTC दिन गणना)
+const BS_BASE = { y: 2083, m: 0, d: 1, utcDay: Date.UTC(2026, 3, 14) / 86400000 };
+const BAR_NAMES = ["आइतबार","सोमबार","मंगलबार","बुधबार","बिहीबार","शुक्रबार","शनिबार"];
+
+function toNepDigits(n) {
+    return String(n).split("").map(c => nepaliDigits[parseInt(c)]).join("");
+}
+function fromNepDigits(s) {
+    return parseInt(String(s).split("").map(c => { const i = nepaliDigits.indexOf(c); return i < 0 ? c : i; }).join(""), 10);
+}
+function pad2Nep(n) { return toNepDigits(String(n).padStart(2, "0")); }
+
+// वि.सं. मिति -> दिन संख्या (आधार मितिबाट फरक)
+function bsToDayNumber(y, m, d) {
+    let days = 0;
+    if (y >= BS_BASE.y) {
+        for (let yy = BS_BASE.y; yy < y; yy++) days += BS_MONTH_DAYS[yy].reduce((a, b) => a + b, 0);
+        for (let mm = 0; mm < m; mm++) days += BS_MONTH_DAYS[y][mm];
+    } else {
+        for (let yy = y; yy < BS_BASE.y; yy++) days -= BS_MONTH_DAYS[yy].reduce((a, b) => a + b, 0);
+        for (let mm = 0; mm < m; mm++) days += BS_MONTH_DAYS[y][mm];
+    }
+    return BS_BASE.utcDay + days + (d - 1);
+}
+// दिन संख्या -> वि.सं. मिति
+function dayNumberToBs(dayNum) {
+    let diff = dayNum - BS_BASE.utcDay;
+    let y = BS_BASE.y;
+    while (diff < 0) { y--; diff += BS_MONTH_DAYS[y].reduce((a, b) => a + b, 0); }
+    while (diff >= BS_MONTH_DAYS[y].reduce((a, b) => a + b, 0)) { diff -= BS_MONTH_DAYS[y].reduce((a, b) => a + b, 0); y++; }
+    let m = 0;
+    while (diff >= BS_MONTH_DAYS[y][m]) { diff -= BS_MONTH_DAYS[y][m]; m++; }
+    return { y: y, m: m, d: diff + 1 };
+}
+// अहिलेको नेपाल समय (UTC+५:४५) अनुसारको दिन संख्या
+function nepalTodayDayNumber() {
+    const nepalMs = Date.now() + (5 * 60 + 45) * 60000;
+    return Math.floor(nepalMs / 86400000);
+}
+// दिन संख्याबाट बार (१ जनवरी १९७० बिहीबार थियो)
+function barFromDayNumber(dayNum) {
+    return BAR_NAMES[(((dayNum + 4) % 7) + 7) % 7];
+}
+
+const yearSel  = document.querySelector('select[name="nepali_year"]');
+const monthSel = document.querySelector('select[name="nepali_month"]');
+const barSel   = document.querySelector('select[name="shift"]');
+let dateTouched = false;   // प्रयोगकर्ताले मिति आफैँ फेरेको छ भने स्वतः नफेर्ने
+
+function ensureYearOption(y) {
+    const val = toNepDigits(y);
+    if (![...yearSel.options].some(o => o.value === val)) {
+        const op = document.createElement("option");
+        op.value = val; op.textContent = val;
+        yearSel.insertBefore(op, yearSel.firstChild);
+    }
+}
+function setAutoDate() {
+    const t = dayNumberToBs(nepalTodayDayNumber());
+    ensureYearOption(t.y);
+    yearSel.value  = toNepDigits(t.y);
+    monthSel.value = pad2Nep(t.m + 1);
+    gateSelect.value = String(t.d).padStart(2, "0");
+    barSel.value = barFromDayNumber(nepalTodayDayNumber());
+}
+// छानिएको मिति अनुसार बार मिलाउने (हातले मिति फेरे पनि ठ्याक्कै मिल्ने)
+function syncBarFromSelection() {
+    const y = fromNepDigits(yearSel.value);
+    const m = fromNepDigits(monthSel.value) - 1;
+    const d = parseInt(gateSelect.value, 10);
+    if (!y || isNaN(m) || m < 0 || !d || !BS_MONTH_DAYS[y] || d > BS_MONTH_DAYS[y][m]) { barSel.value = ""; return; }
+    barSel.value = barFromDayNumber(bsToDayNumber(y, m, d));
+}
+[yearSel, monthSel, gateSelect].forEach(function(el) {
+    el.addEventListener("change", function() { dateTouched = true; syncBarFromSelection(); loadFilled(); });
+});
+setAutoDate();
+// पेज खुला रहँदा नेपाल समय अनुसार मध्यरात्रि पार भएमा मिति स्वतः फेरिने
+setInterval(function() {
+    if (dateTouched) return;
+    const before = dateKey();
+    setAutoDate();
+    if (dateKey() !== before) loadFilled();
+}, 30000);
 
 // कर्मचारीहरुको विवरण डेटा
 const staffData = {
@@ -648,50 +876,265 @@ const staffData = {
   ]
 };
 
-// दर्जा अनुसार नाम फिल्टर गर्ने फसन
-function filterNames() {
-    const rankSelect = document.getElementById("rankSelect");
-    const nameSelect = document.getElementById("nameSelect");
-    const selectedRank = rankSelect.value;
-    
-    nameSelect.innerHTML = '<option value="">-- नाम छान्नुहोस् --</option>';
-    
-    if (selectedRank && staffData[selectedRank]) {
-        staffData[selectedRank].forEach(function(name) {
-            const option = document.createElement("option");
-            option.value = name;
-            option.textContent = name;
-            nameSelect.appendChild(option);
-        });
-    } else {
-        nameSelect.innerHTML = '<option value="">-- पहिले दर्जा छान्नुहोस् --</option>';
-    }
+// ===== नाम छनोट: खोज्ने, धेरै जना एकैपटक, सबै छान्ने =====
+const scriptURL = "https://script.google.com/macros/s/AKfycbyS1mPzGd0g0IHIfTyWdFRSNHhYtSlzANPDBDaXpbW1oWBmoyA-QzrV1k_z8aK_6xuY/exec";
+const rankEl     = document.getElementById("rankSelect");
+const nameSearch = document.getElementById("nameSearch");
+const nameList   = document.getElementById("nameList");
+const chipsBox   = document.getElementById("selChips");
+const selCountEl = document.getElementById("selCount");
+const toastEl    = document.getElementById("toast");
+const selected   = new Map();   // "दर्जा|नाम" -> {r, n}
+const filledCache = {};         // मिति -> { "दर्जा|नाम": true | कार्य }
+let currentFilled = {};
+
+function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add("show");
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function() { toastEl.classList.remove("show"); }, 2600);
 }
+function dateKey() {
+    if (!yearSel.value || !monthSel.value || !gateSelect.value) return "";
+    return yearSel.value + "|" + monthSel.value + "|" + gateSelect.value;
+}
+
+function dutyOptions() {
+    return Array.from(document.querySelectorAll('input[name="duty_type"]')).map(function(cb) {
+        return { value: cb.value, label: cb.parentElement.textContent.trim() };
+    });
+}
+function commonDuties() {
+    return Array.from(document.querySelectorAll('input[name="duty_type"]:checked')).map(function(cb) { return cb.value; });
+}
+function knownDuties(key) {
+    const v = currentFilled[key];
+    return typeof v === "string" ? v.split(", ") : [];
+}
+function addSel(it) {
+    const key = it.r + "|" + it.n;
+    if (!selected.has(key)) selected.set(key, { r: it.r, n: it.n, d: new Set(commonDuties()) });
+}
+
+// छानिएका प्रत्येक कर्मचारीको छुट्टै कार्य टिक गर्ने प्यानल
+function updateSelUI() {
+    selCountEl.textContent = selected.size ? "(छानिएको: " + toNepDigits(selected.size) + " जना)" : "";
+    chipsBox.innerHTML = "";
+    if (!selected.size) return;
+    const hint = document.createElement("div");
+    hint.className = "sel-hint";
+    hint.textContent = "प्रत्येकको नामको मुनि टिक लगाउन मिल्छ। ५ मा टिक लगाए सबैमा एकैपटक लाग्छ, त्यसपछि कसैको हटाउन पनि मिल्छ।";
+    chipsBox.appendChild(hint);
+    const opts = dutyOptions();
+    selected.forEach(function(v, key) {
+        const row = document.createElement("div");
+        row.className = "sel-row";
+        const head = document.createElement("div");
+        head.className = "sel-head";
+        const nm = document.createElement("span");
+        nm.textContent = v.n;
+        const rk = document.createElement("small");
+        rk.textContent = v.r;
+        nm.appendChild(rk);
+        const x = document.createElement("button");
+        x.type = "button"; x.className = "sel-x"; x.textContent = "✕"; x.title = "हटाउनुहोस्";
+        x.addEventListener("click", function() { selected.delete(key); updateSelUI(); renderNames(); });
+        head.appendChild(nm); head.appendChild(x);
+        const box = document.createElement("div");
+        box.className = "sel-duties";
+        opts.forEach(function(o) {
+            const lab = document.createElement("label");
+            lab.className = "dpill";
+            const cb = document.createElement("input");
+            cb.type = "checkbox";
+            const done = knownDuties(key).indexOf(o.value) !== -1;
+            cb.checked = !done && v.d.has(o.value);
+            cb.disabled = done;
+            if (done) lab.classList.add("recorded");
+            cb.addEventListener("change", function() { if (cb.checked) v.d.add(o.value); else v.d.delete(o.value); });
+            lab.appendChild(cb);
+            lab.appendChild(document.createTextNode(done ? "✔ " + o.label : o.label));
+            box.appendChild(lab);
+        });
+        row.appendChild(head); row.appendChild(box);
+        chipsBox.appendChild(row);
+    });
+}
+document.querySelectorAll('input[name="duty_type"]').forEach(function(cb) {
+    cb.addEventListener("change", function() {
+        selected.forEach(function(v) { if (cb.checked) v.d.add(cb.value); else v.d.delete(cb.value); });
+        updateSelUI();
+    });
+});
+
+function visibleItems() {
+    const rank = rankEl.value;
+    const q = nameSearch.value.trim().toLowerCase();
+    let items = [];
+    if (rank) {
+        (staffData[rank] || []).forEach(function(n) { items.push({ r: rank, n: n }); });
+    } else if (q) {
+        Object.keys(staffData).forEach(function(r) {
+            staffData[r].forEach(function(n) { items.push({ r: r, n: n }); });
+        });
+    }
+    if (q) items = items.filter(function(x) { return x.n.toLowerCase().indexOf(q) !== -1; });
+    return items;
+}
+
+function renderNames() {
+    const rank = rankEl.value;
+    const items = visibleItems();
+    nameList.innerHTML = "";
+    if (!items.length) {
+        const d = document.createElement("div");
+        d.className = "name-empty";
+        d.textContent = (rank || nameSearch.value.trim()) ? "कोही भेटिएन" : "दर्जा छान्नुहोस् वा नाम खोज्नुहोस्";
+        nameList.appendChild(d);
+        return;
+    }
+    items.forEach(function(it) {
+        const key = it.r + "|" + it.n;
+        const lab = document.createElement("label");
+        lab.className = "name-item";
+        const cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb.checked = selected.has(key);
+        cb.addEventListener("change", function() {
+            if (cb.checked) addSel(it); else selected.delete(key);
+            updateSelUI();
+        });
+        const box = document.createElement("span");
+        const nm = document.createElement("span");
+        nm.textContent = it.n;
+        box.appendChild(nm);
+        if (!rank) {
+            const sm = document.createElement("small");
+            sm.textContent = it.r;
+            box.appendChild(sm);
+        }
+        if (currentFilled[key]) {
+            lab.classList.add("done");
+            const ok = document.createElement("small");
+            ok.className = "ok";
+            ok.textContent = typeof currentFilled[key] === "string" ? "✔ भरिसकेको: " + currentFilled[key] : "✔ भरिसकेको";
+            box.appendChild(ok);
+        }
+        lab.appendChild(cb);
+        lab.appendChild(box);
+        nameList.appendChild(lab);
+    });
+}
+
+// दर्जा फेरिएपछि (HTML को onchange ले यही बोलाउँछ)
+function filterNames() { renderNames(); }
+
+nameSearch.addEventListener("input", renderNames);
+nameSearch.addEventListener("keydown", function(e) {
+    if (e.key !== "Enter") return;
+    e.preventDefault();                       // Enter थिच्दा फारम सेभ नहोस्
+    const items = visibleItems();
+    if (nameSearch.value.trim() && items.length) {
+        addSel(items[0]);
+        nameSearch.value = "";
+        updateSelUI();
+        renderNames();
+    }
+});
+document.getElementById("selAllBtn").addEventListener("click", function() {
+    visibleItems().forEach(function(it) {
+        const key = it.r + "|" + it.n;
+        addSel(it);
+    });
+    updateSelUI(); renderNames();
+});
+document.getElementById("clearBtn").addEventListener("click", function() {
+    selected.clear(); updateSelUI(); renderNames();
+});
+
+// त्यो मितिमा को-को भरिसकेको छ भनी Sheet बाट बुझ्ने (डबल नहोस् भनेर)
+function loadFilled() {
+    const key = dateKey();
+    if (!key) { currentFilled = {}; renderNames(); updateSelUI(); return; }
+    currentFilled = filledCache[key] || (filledCache[key] = {});
+    renderNames();
+    updateSelUI();
+    const url = scriptURL + "?action=filled&year=" + encodeURIComponent(yearSel.value) +
+                "&month=" + encodeURIComponent(monthSel.value) + "&gate=" + encodeURIComponent(gateSelect.value);
+    fetch(url).then(function(r) { return r.json(); }).then(function(data) {
+        if (!data || !data.filled) return;
+        const cache = filledCache[key];
+        Object.keys(data.filled).forEach(function(k) { if (!cache[k]) cache[k] = true; });
+        if (dateKey() === key) { currentFilled = cache; renderNames(); updateSelUI(); }
+    }).catch(function() { /* नेटवर्क नभए चुपचाप छोड्ने */ });
+}
+window.addEventListener("focus", function() { if (dateKey()) loadFilled(); });
 
 // फारम सबमिट गर्दा सञ्चालन हुने फसन
 document.getElementById("myForm").addEventListener("submit", function(e) {
     e.preventDefault();
-    let form = this;
-    
-    // चेकबक्सहरू छान्ने
-    let checkboxes = document.querySelectorAll('input[name="duty_type"]:checked');
-    let values = [];
-    checkboxes.forEach((cb) => { values.push(cb.value); });
-    
-    // डाटा तयार पार्ने
-    let formData = new FormData(form);
-    formData.set("duty_type", values.join(", ")); 
-    
-    // Google Apps Script को URL
-    let scriptURL = "https://script.google.com/macros/s/AKfycbyS1mPzGd0g0IHIfTyWdFRSNHhYtSlzANPDBDaXpbW1oWBmoyA-QzrV1k_z8aK_6xuY/exec";
-    
-    // sendBeacon को प्रयोग (डाटा सेभ गर्न)
-    navigator.sendBeacon(scriptURL, formData);
-    
-    // मेसेज नदेखाई केवल फारम मात्र रिसेट हुने
-    form.reset(); 
-    document.getElementById("nameSelect").innerHTML = '<option value="">-- पहिले दर्जा छान्नुहोस् --</option>';
+    const form = this;
+
+    if (!selected.size) { toast("कम्तीमा एक जना कर्मचारी छान्नुहोस्"); nameSearch.focus(); return; }
+
+    // प्रत्येकको कार्य = उसको आफ्नो नामको मुनि टिक भएका (५ मा लगाएको पनि त्यहीँ सर्छ)
+    const order = dutyOptions().map(function(o) { return o.value; });
+    const staff = Array.from(selected.values()).map(function(s) {
+        return { r: s.r, n: s.n, d: order.filter(function(v) { return s.d.has(v); }) };
+    });
+    const missing = staff.find(function(s) { return !s.d.length; });
+    if (missing) {
+        toast(missing.n + " को कार्य छानिएको छैन");
+        chipsBox.scrollIntoView({ block: "nearest" });
+        return;
+    }
+
+    // यही मितिमा यही कार्य पहिले नै भरिसकेको भए दोहोर्‍याउँदैन; फरक कार्य (जस्तै पिटी पछि ड्यूटी) भए थप्छ
+    const key = dateKey();
+    const cache = filledCache[key] || (filledCache[key] = {});
+    let dupPeople = 0;
+    const toSend = [];
+    staff.forEach(function(s) {
+        const v = cache[s.r + "|" + s.n];
+        const have = typeof v === "string" ? v.split(", ") : [];
+        const fresh = s.d.filter(function(x) { return have.indexOf(x) === -1; });
+        if (!fresh.length) dupPeople++; else toSend.push({ r: s.r, n: s.n, d: fresh });
+    });
+    if (!toSend.length) { toast("छानिएका सबैको यो कार्य पहिले नै भरिसकेको छ (डबल भएन)"); return; }
+
+    const formData = new FormData(form);
+    formData.delete("rank_name");
+    formData.set("duty_type", order.filter(function(v) { return toSend.some(function(s) { return s.d.indexOf(v) !== -1; }); }).join(", "));
+    formData.set("staff_list", JSON.stringify(toSend));
+
+    if (!(navigator.sendBeacon && navigator.sendBeacon(scriptURL, formData))) {
+        fetch(scriptURL, { method: "POST", body: formData, mode: "no-cors" }).catch(function() {});
+    }
+
+    // यही पेजमा तुरुन्तै ✔ देखाउन
+    toSend.forEach(function(s) {
+        const k = s.r + "|" + s.n;
+        const prev = typeof cache[k] === "string" ? cache[k].split(", ") : [];
+        s.d.forEach(function(d) { if (prev.indexOf(d) === -1) prev.push(d); });
+        cache[k] = prev.join(", ");
+    });
+    currentFilled = cache;
+
+    toast(toNepDigits(toSend.length) + " जनाको रेकर्ड पठाइयो ✔" + (dupPeople ? " (" + toNepDigits(dupPeople) + " जनाको कार्य पहिले नै थियो)" : ""));
+
+    // अर्को रेकर्डको लागि: नाम, कार्य र विवरण खाली; मिति र दर्जा जस्ताको तस्तै
+    selected.clear();
+    document.querySelectorAll('input[name="duty_type"]').forEach(function(cb) { cb.checked = false; });
+    form.querySelector('[name="achievements"]').value = "";
+    form.querySelector('[name="remarks"]').value = "";
+    nameSearch.value = "";
+    updateSelUI();
+    renderNames();
+    setTimeout(loadFilled, 4000);
 });
+
+updateSelUI();
+loadFilled();
 </script>
 
 </body>
